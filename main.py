@@ -1,15 +1,15 @@
-from neopixel import Neopixel
+from lib.neopixel import Neopixel
 import machine
 from machine import Pin, I2C
 import uasyncio
-from abutton import Pushbutton
-import time
-from ssd1306 import SSD1306_I2C
-from oledidle import oled_idling
-from oledfire import oled_firing
-from pcidle import pc_idle
-from pcboot import pc_boot
-from oledboot import oled_boot
+from lib.abutton import Pushbutton
+#import time
+from lib.ssd1306 import SSD1306_I2C
+from lib.oledidle import oled_idling
+from lib.oledfire import oled_firing
+from lib.pcidle import pc_idle
+from lib.pcboot import pc_boot
+from lib.oledboot import oled_boot
 
 # #Various Variables
 pcSpeed = 50
@@ -33,50 +33,6 @@ pcPixels = Neopixel(num_pcPixels, 0, 2, "GRB")
 pcPixels.fill((0, 0, 0))
 pcPixels.brightness(1)
         
-# #oled boot sequence
-# async def oledboot(speed, booted_callback):
-#         oled.fill(0)
-#         oled.text("Loading", 0, 0)
-#         oled.text("SPENGLER.ROM", 0, 8)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.text("Loading", 0, 0)
-#         oled.text("SPENGLER.ROM.", 0, 8)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.text("Loading", 0, 0)
-#         oled.text("SPENGLER.ROM..", 0, 8)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.text("Loading", 0, 0)
-#         oled.text("SPENGLER.ROM...", 0, 8)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.text("Loading", 0, 0)
-#         oled.text("SPENGLER.ROM....", 0, 8)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.fill_rect(0,0,128,8,1)
-#         oled.text("COMPLETE", 0, 0, 0)
-#         oled.text("SPENGLER.ROM....", 0, 8)
-#         oled.text("Syncing Gen...", 0, 16)
-#         oled.show()
-#         await uasyncio.sleep_ms(speed)
-#         oled.fill(0)
-#         oled.fill_rect(0,0,128,8,1)
-#         oled.text("COMPLETE", 0, 0, 0)
-#         oled.text("SPENGLER.ROM....", 0, 8)
-#         oled.text("Syncing Gen...", 0, 16)
-#         oled.text("Boot Cyclo...", 0, 24)
-#         oled.show()
-#         oled.fill(0)
-#         booted_callback()
-
 blinkingtask = None
 
 async def toggleled():

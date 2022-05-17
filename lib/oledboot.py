@@ -51,14 +51,14 @@ class oled_boot:
             self.oled.fill(0)
             await uasyncio.sleep_ms(self.speed)
 
-        async def loop(self):
+        async def sequence(self):
             await self.boot_up()
             await uasyncio.sleep_ms(self.speed)
             self.callback()
 
         def start(self):
             self.oled.fill(0)
-            self.current_task = uasyncio.create_task(self.loop())
+            self.current_task = uasyncio.create_task(self.sequence())
 
         def stop(self):
             self.current_task.cancel()

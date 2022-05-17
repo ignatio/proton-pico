@@ -1,5 +1,5 @@
 import uasyncio
-from neopixel import Neopixel
+from lib.neopixel import Neopixel
 
 #Colour Table
 red = (255, 0, 0)
