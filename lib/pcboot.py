@@ -21,7 +21,7 @@ class pc_boot:
             self.callback = callback
         
         async def boot_up(self):
-            for j in range(3):
+            for j in range(8):
                     #print(j)
                     #print(pcBooted)
                     #pcPixels.brightness(10*(j*2)) #adjust brightness each cycle
@@ -35,7 +35,7 @@ class pc_boot:
                         self.strip.set_pixel(7 - i, off)
                         self.strip.show()
                         await uasyncio.sleep_ms(self.speed)
-                    if j == 2:
+                    if j == 7:
                         await uasyncio.sleep_ms(self.speed)
                         self.strip.fill(off)
 
