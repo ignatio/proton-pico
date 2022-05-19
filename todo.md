@@ -1,3 +1,113 @@
+What does the pack do?
+    The pack functions in the following way (final state):
+        - Upon power on, a boot sequence is played. This involves playing a boot up sound and displaying animations on the neopixels for the powercell and cyclotron.
+        During this sequence the wand and all associated controls and effects are locked out completley (whether it is in the activated state or not).
+        - After the boot sequence, the pack goes to idle mode. In idle mode there are animations playing on the cyclotron and powercell neopixels, and an idle sound is
+        playing.
+        - The wand is powered on seperately by switching three toggle switches on the wand. Switch 1 plays a wand boot up sound and starts the boot 
+        sequence animation on the oled, transitioning to the idle animation once complete. Switch 2 turns on the internal glowing and external blinking wand lights. 
+        Switch 3 plays another, different boot sound (indicating saftey off). The activate (fire) button on the wand plays a lockout sound unless these conditions are 
+        met, in which case pressing the button activates the firing sequence for the entire pack.
+        - The firing sequence involves first playing a firing sound while the activate button is held down. While this sound is playing, the animations on the powercell and 
+        cyclotron continue as in the idle state. The oled switches from displaying the Idle animation (sweepeing rectangle) to the firing animation (counting bargraph). The
+        wand emiiter lights turn on and display their firing animation.
+            - After holding the activate button down for approximately 20 seconds the state of the entire pack changes to the overheat warning mode. If the activate button
+            continues to be held in this mode a different sound is played (firing sound with overheat alarm) and the powercell, cyclotron and wand emitter neopixels change
+            to their overheat animations (more intense, faster). The oled plays its overheat animation (flashing: WARNING! WARNING! WARNING!). The internal wand glow changes
+            colour and the external blinking lights flash faster.
+                - If the activate button is released in this mode, all animations are reset to their idle states, internal wand lights go back to idle colour and the 
+                long wand shutdown sound is played.
+                - If the button is held until the end of the overheat warning timer, the pack goes into auto shutdown (venting) mode.
+                    - In venting mode, the activate button is locked out. The cyclotron and powercell lights flash on and off while the venting sound plays. The oled shows
+                    "Venting...". The N-Filter lights turn on and if I decide to add it the smoke effect turns on, venting smoke out hte n-filter. Once this secuence is 
+                    completed the pack resets completely and activates the Boot secquence. 
+        - If the activate button is released during normal firing (before overheat) the short wand shutdown sound plays and the oled returns to its idle animation.
+        
+Logical Flow
+.. State
+>> Do Something
+!! Event
+?? Query
+
+..Boot Sequence
+    >>Play Powercell Boot Animation
+    >>Play Cyclotron Boot Animation
+    >>Play Boot Up Sound
+    >> Go to Idle State
+..Idle State
+    >>Play Powercell Idle Animation
+    >>Play Cyclotron Idle Animation
+    >>Play Idle Sound
+    >>Play Idle Cyclotron Rumble Effect (optional still)
+!!Activate Button Pressed
+        ??Is the wand in a booted state?
+            >>YES
+                >>Go to ..Fire State
+            >>NO
+                >>Play Lockout Sound
+                >>Go to ..Idle State
+..Fire State
+    >>Play Powercell Idle Animation
+    >>Play Cyclotron Idle Animation
+    >>Play Wand Emitter Animation
+    >>Play Firing Sound
+    >>Play Idle Cyclotron Rumble Effect (optional still)
+    >>Play Firing Wand Rumble Effect (optional still)
+    !!Activate Button Released
+        >>Play Short Shutdown
+        >>Turn Off Wand Emitter Animation
+        >>Go To ..Idle State
+    !!20 Seconds Elapsed
+        >>Go To ..Overheat State
+..Overheat State
+    >>Play Powercell Overheat Animation
+    >>Play Cyclotron Overheat Animation
+    >>Play Wand Emitter Overheat Animation
+    >>Play Overheat Firing Sound
+    >>Play Maximum Cyclotron Rumble Effect (optional still)
+    >>Play Maximum Wand Rumble Effect (optional still)
+    !!Activate Button Released
+        >>Play Long Shutdown
+        >>Turn Off Wand Emitter Animation
+        >>Go To ..Idle State
+    !!10 Seconds Elapsed
+        >>Go To ..Venting Sequence
+..Venting Sequence
+    >>Turn Off Wand Emitter Animation
+    >>Play Powercell Venting Animation
+    >>Play Cyclotron Venting Animation
+    >>Play N-Filter Venting Animation
+    >>Play Venting Sound
+    >>Play Smoke Effect (optional still)
+    >>Turn Off All Lights, Animiations, Sounds and Effects
+    >>Go To ..Boot Sequence
+    
+# Wand Logic #
+!!Wand Switch 1 Toggle
+    ??Was Wand Switch 1 On?
+        >>YES
+            >>Play Wand Shutdown Sound
+        >>NO
+            >>Play Wand Boot Up Sound
+!!Wand Switch 2 Toggle
+    ??Was Wand Switch 1 On?
+        >>YES
+            >>Turn On Wand Internal Glow and External Blink Lights
+            >>Play Oled Boot Animation
+        >>NO
+            >>Do Nothing        
+!!Wand Switch 3 Toggle
+    ??Was Wand Switch 2 On?
+        >>YES
+            ??Was Wand Switch 3 On?	(This does the same no matter what)
+                >>YES
+                    >>Play Safety Sound
+                >>NO
+                    >>Play Safety Sound
+        >>NO
+            >>Do Nothing
+
+
 TODO:
     Add Cyclotron Lights
         Add Boot Seq (cross pattern)
@@ -13,7 +123,7 @@ TODO:
     Add Smoke Effect (?)
         Add Smoke on Overheat
         Add Smoke on Venting
-    Add Rumble Motor
+    Add Rumble Motor (?)
         Add Rumble when Firing
         Add Max Rumble when Overheated
         Add Rumble on Wand Boot
@@ -21,13 +131,17 @@ TODO:
         Add Slowblow Switch
         Add Wand Boot Switch
         
-    Add DFPLAYER
-        Add Boot Sound
-        Add Idle Sound
-        Add Wand Boot Sound
-        Add Wand Shutdown Sound
-        Add Fire Sound
-        Add Overheat Sound
-        Add Reset Sound
-        Add Vent Sound
-        Add Shutdown Sound
+    Add DFMANAGER
+        Needs to:
+            - Play a track sent as an argument 
+                -(DFPLAYERMINI already does this by exposing Player.play())
+            - Raise an event when a sound is completed (for handling transitions between states)
+                - Knowing when the song is done playing can be accompished either by reading 
+                the busy pin or by keeping track of the length of each file and async awaiting
+                for the file to be completed.
+                    - if using file lengths need to provide a table of track numbers and lengths
+                    and send both of these attributes to the function that calls Player.play()
+                - Need to have a way to handle transitions, like play this, then that. 
+                    -should this be in a seperate class that handles a state machine for the 
+                    entire pack or part of a seperate music manager class?
+            
