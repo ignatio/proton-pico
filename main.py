@@ -25,8 +25,9 @@ pcBooted = False
 i2c=I2C(1,sda=Pin(6), scl=Pin(7), freq=400000)
 oled = SSD1306_I2C(128, 32, i2c)
 
-#Setup Fire Button
+#Setup button objects
 mybutton = Pushbutton(Pin(15, Pin.IN, Pin.PULL_UP))
+busytrigger = Pushbutton(Pin(14, Pin.IN, Pin.PULL_UP))
 
 #Pico LED for blinkingtest
 led = Pin(25, Pin.OUT)
@@ -104,7 +105,9 @@ oled_boot.start()
 sequencetoidle(1, 2)
 
 mybutton.press_func(start_toggle)
-mybutton.release_func(stop_toggle) 
+mybutton.release_func(stop_toggle)
+
+#busytrigger.release_func(music.play_next)
 
 while True:
     uasyncio.run(main())

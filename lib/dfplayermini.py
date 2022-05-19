@@ -2,6 +2,9 @@ import utime
 from machine import UART, Timer, Pin
 from utime import sleep_ms, ticks_ms, ticks_diff
 import uasyncio
+from abutton import Pushbutton
+
+busytrigger = Pushbutton(Pin(14, Pin.IN, Pin.PULL_UP))
 
 Start_Byte = 0x7E
 Version_Byte = 0xFF
