@@ -54,7 +54,7 @@ Logical Flow
     >>Play Cyclotron Idle Animation
     >>Play Idle Sound
     >>Play Idle Cyclotron Rumble Effect (optional still)
-!!Activate Button Pressed
+    !!Activate Button Pressed
         ??Is the wand in a booted state?
             >>YES
                 >>Go to ..Fire State
