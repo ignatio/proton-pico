@@ -1,27 +1,42 @@
     What does the pack do?
     The pack functions in the following way (final state):
-        - Upon power on, a boot sequence is played. This involves playing a boot up sound and displaying animations on the neopixels for the powercell and cyclotron.
-        During this sequence the wand and all associated controls and effects are locked out completley (whether it is in the activated state or not).
-        - After the boot sequence, the pack goes to idle mode. In idle mode there are animations playing on the cyclotron and powercell neopixels, and an idle sound is
-        playing.
-        - The wand is powered on seperately by switching three toggle switches on the wand. Switch 1 plays a wand boot up sound and starts the boot 
-        sequence animation on the oled, transitioning to the idle animation once complete. Switch 2 turns on the internal glowing and external blinking wand lights. 
-        Switch 3 plays another, different boot sound (indicating saftey off). The activate (fire) button on the wand plays a lockout sound unless these conditions are 
-        met, in which case pressing the button activates the firing sequence for the entire pack.
-        - The firing sequence involves first playing a firing sound while the activate button is held down. While this sound is playing, the animations on the powercell and 
-        cyclotron continue as in the idle state. The oled switches from displaying the Idle animation (sweepeing rectangle) to the firing animation (counting bargraph). The
-        wand emiiter lights turn on and display their firing animation.
-            - After holding the activate button down for approximately 20 seconds the state of the entire pack changes to the overheat warning mode. If the activate button
-            continues to be held in this mode a different sound is played (firing sound with overheat alarm) and the powercell, cyclotron and wand emitter neopixels change
-            to their overheat animations (more intense, faster). The oled plays its overheat animation (flashing: WARNING! WARNING! WARNING!). The internal wand glow changes
+        - Upon power on, a boot sequence is played. This involves playing a boot up sound and 
+        displaying animations on the neopixels for the powercell and cyclotron. During this 
+        sequence the wand and all associated controls and effects are locked out completley 
+        (whether it is in the activated state or not).
+        - After the boot sequence, the pack goes to idle mode. In idle mode there are animations
+        playing on the cyclotron and powercell neopixels, and an idle sound is playing.
+        - The wand is powered on seperately by switching three toggle switches on the wand. 
+        Switch 1 plays a wand boot up sound and starts the boot sequence animation on the oled,
+        transitioning to the idle animation once complete. Switch 2 turns on the internal 
+        glowing and external blinking wand lights. Switch 3 plays another, different boot sound 
+        (indicating saftey off). The activate (fire) button on the wand plays a lockout sound 
+        unless these conditions are met, in which case pressing the button activates the 
+        firing sequence for the entire pack.
+        - The firing sequence involves first playing a firing sound while the activate button 
+        is held down. While this sound is playing, the animations on the powercell and cyclotron
+        continue as in the idle state. The oled switches from displaying the Idle animation 
+        (sweepeing rectangle) to the firing animation (counting bargraph). The wand emiiter 
+        lights turn on and display their firing animation.
+            - After holding the activate button down for approximately 20 seconds the state of 
+            the entire pack changes to the overheat warning mode. If the activate button 
+            continues to be held in this mode a different sound is played (firing sound with 
+            overheat alarm) and the powercell, cyclotron and wand emitter neopixels change to 
+            their overheat animations (more intense, faster). The oled plays its overheat 
+            animation (flashing: WARNING! WARNING! WARNING!). The internal wand glow changes
             colour and the external blinking lights flash faster.
-                - If the activate button is released in this mode, all animations are reset to their idle states, internal wand lights go back to idle colour and the 
-                long wand shutdown sound is played.
-                - If the button is held until the end of the overheat warning timer, the pack goes into auto shutdown (venting) mode.
-                    - In venting mode, the activate button is locked out. The cyclotron and powercell lights flash on and off while the venting sound plays. The oled shows
-                    "Venting...". The N-Filter lights turn on and if I decide to add it the smoke effect turns on, venting smoke out hte n-filter. Once this secuence is 
+                - If the activate button is released in this mode, all animations are reset to 
+                their idle states, internal wand lights go back to idle colour and the long wand 
+                shutdown sound is played.
+                - If the button is held until the end of the overheat warning timer, the pack 
+                goes into auto shutdown (venting) mode.
+                    - In venting mode, the activate button is locked out. The cyclotron and 
+                    powercell lights flash on and off while the venting sound plays. The oled 
+                    shows "Venting...". The N-Filter lights turn on and if I decide to add it the
+                    smoke effect turns on, venting smoke out hte n-filter. Once this secuence is 
                     completed the pack resets completely and activates the Boot secquence. 
-        - If the activate button is released during normal firing (before overheat) the short wand shutdown sound plays and the oled returns to its idle animation.
+        - If the activate button is released during normal firing (before overheat) the short wand
+        shutdown sound plays and the oled returns to its idle animation.
         
 Logical Flow
 .. State
