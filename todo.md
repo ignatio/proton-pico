@@ -1,4 +1,4 @@
-What does the pack do?
+    What does the pack do?
     The pack functions in the following way (final state):
         - Upon power on, a boot sequence is played. This involves playing a boot up sound and displaying animations on the neopixels for the powercell and cyclotron.
         During this sequence the wand and all associated controls and effects are locked out completley (whether it is in the activated state or not).
